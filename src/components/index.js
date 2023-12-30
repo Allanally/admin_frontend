@@ -11,3 +11,4 @@ export { default as Form } from './Form';
 export { default as ProductForm } from './productForm';
 export { default as Header } from './Header';
 export { default as BuyForm } from './BuyForm';
+export { default as Class } from './Class';

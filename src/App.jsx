@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 
-import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Ecommerce, Students, Discipline, Pending, DetailsPage, Staff, InventoryDetails, NewOrder } from './pages';
+import { Navbar, Footer, Class, Sidebar, ThemeSettings } from './components';
+import { Ecommerce, Students, Discipline, Main, Pending, DetailsPage, Staff, InventoryDetails, NewOrder } from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
+
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -68,7 +69,9 @@ const App = () => {
 
                 {/* pages  */}
                 <Route path="/students" element={<Students />} />
+                <Route path='/Main' element={<Main />} />
                 <Route path="/PERMISSIONS" element={<Pending />} />
+                <Route path="/class/:className" element={<Class />} />
                 <Route path="/DISCIPLINE" element={<Discipline />} />
                 <Route path='/orders/:id' element={<DetailsPage />} />
                 <Route path='/new-order/:id' element={<NewOrder />} />

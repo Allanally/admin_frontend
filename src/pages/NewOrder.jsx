@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import { AiFillDelete } from 'react-icons/ai';
 import { readXLSXFile } from './FileReader'; // Import the XLSX file reading function
 
 const NewOrder = () => {
@@ -73,15 +72,9 @@ const NewOrder = () => {
     <div className="md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between">
         <div>
-          <h1 className="mt-2 flex text-xl font-bold">Create New Class</h1>
+          <h1 className="mt-2 flex text-xl font-bold">Class Name</h1>
+          
           <form className="mt-6 flex gap-4 flex-col" onSubmit={handleUpload}>
-            <label>Class Name</label>
-            <input
-              type="text"
-              className="w-[8rem] px-3 py-2 border rounded"
-              value={classData.className}
-              onChange={(e) => setClassData({ ...classData, className: e.target.value })}
-            />
             <label>Class Year</label>
             <input
               type="number"

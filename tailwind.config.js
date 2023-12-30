@@ -21,6 +21,10 @@ export default {
         'light-gray': '#F7F7F7',
         'half-transparent': 'rgba(0, 0, 0, 0.5)',
       },
+      backdropFilter: {
+        'none': 'none',
+        'blur-md': 'blur(8px)',
+      },
       borderWidth: {
         1: '1px',
       },
@@ -48,5 +52,7 @@ export default {
       },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    require('tailwindcss-filters'),
+  ],
+};
