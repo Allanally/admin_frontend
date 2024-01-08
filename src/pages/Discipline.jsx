@@ -5,6 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { Header } from "../components";
 import { useStateContext } from '../contexts/ContextProvider';
 import { FaFilePdf } from 'react-icons/fa';
+import jsPDF from 'jspdf';
 
 const Discipline = () => {
   const { currentColor, currentMode, transactions } = useStateContext();
@@ -33,6 +34,81 @@ const Discipline = () => {
     fetchFaults();
   }, []);
 
+  const generatePDFReport = () => {
+    const doc = new jsPDF();
+    doc.text('Generated Report', 10, 10);
+  
+    // Calculate the total number of faults
+    const totalFaults = (searchResults.length > 0 ? searchResults : faults).length;
+  
+    // Initialize objects to store the count for each fault, fault type, and date range
+    const faultCounts = {};
+    const faultTypeCounts = {};
+    const dateRangeCounts = {};
+  
+    // Count the occurrences of each fault, fault type, and within specific date ranges
+    (searchResults.length > 0 ? searchResults : faults).forEach(info => {
+      // Count occurrences for each specific fault
+      faultCounts[info.name] = (faultCounts[info.name] || 0) + 1;
+  
+      // Count occurrences for each fault type
+      faultTypeCounts[info.type] = (faultTypeCounts[info.type] || 0) + 1;
+  
+      // Count occurrences within specific date ranges
+      const departDate = new Date(info.date);
+      const dateString = departDate.toISOString().split('T')[0];
+  
+      if (!dateRangeCounts[dateString]) {
+        dateRangeCounts[dateString] = 0;
+      }
+  
+      dateRangeCounts[dateString] += 1;
+    });
+  
+    let yPos = 20;
+  
+    // Write specific fault analysis data to the PDF
+    doc.text('Specific Fault Analysis:', 10, yPos);
+    yPos += 10;
+  
+    Object.keys(faultCounts).forEach(faultName => {
+      const count = faultCounts[faultName];
+      const percentage = (count / totalFaults) * 100;
+  
+      doc.text(`${faultName}: ${count} occurrences (${percentage.toFixed(2)}%)`, 10, yPos);
+      yPos += 10; // Adjust the Y position based on your needs
+    });
+  
+    // Write fault type analysis data to the PDF
+    yPos += 10; // Add some space between specific faults and fault types
+    doc.text('Fault Type Analysis:', 10, yPos);
+    yPos += 10;
+  
+    Object.keys(faultTypeCounts).forEach(faultType => {
+      const count = faultTypeCounts[faultType];
+      const percentage = (count / totalFaults) * 100;
+  
+      doc.text(`${faultType}: ${count} occurrences (${percentage.toFixed(2)}%)`, 10, yPos);
+      yPos += 10; // Adjust the Y position based on your needs
+    });
+  
+    // Write date range analysis data to the PDF
+    yPos += 10; // Add space between fault types and date ranges
+    doc.text('Date Range Analysis:', 10, yPos);
+    yPos += 10;
+  
+    Object.keys(dateRangeCounts).forEach(dateString => {
+      const count = dateRangeCounts[dateString];
+      const percentage = (count / totalFaults) * 100;
+  
+      doc.text(`${dateString}: ${count} occurrences (${percentage.toFixed(2)}%)`, 10, yPos);
+      yPos += 10; // Adjust the Y position based on your needs
+    });
+  
+    // Save or display the PDF
+    doc.save('report.pdf');
+  };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:1337/view', {
@@ -81,7 +157,9 @@ const Discipline = () => {
       <TableCell>Class</TableCell>
       <TableCell>Date Issued</TableCell>
       <TableCell>Message</TableCell>
+      <TableCell>Type</TableCell>
       <TableCell>Issuer</TableCell>
+      <TableCell>Marks</TableCell>
     </TableRow>
   </TableHead>
   <TableBody>
@@ -90,15 +168,17 @@ const Discipline = () => {
         <TableCell>{info.name}</TableCell>
         <TableCell>{info.stream}</TableCell>
         <TableCell>{info.date}</TableCell>
+        <TableCell>{info.type}</TableCell>
         <TableCell>{info.message}</TableCell>
         <TableCell>{info.stream}</TableCell>
+        <TableCell>{info.mark}</TableCell>
       </TableRow>             
     ))}
   </TableBody>
 </Table>
 <div className="flex justify-center p-2 w-4/12 ml-[30%] cursor-pointer bg-blue-500 rounded-md mt-4 mb-4 text-white text-xl  hover:bg-blue-800">
   <FaFilePdf className=" w-12 h-12"/>
-  <button className="">Generate Report</button>
+  <button className="" onClick={generatePDFReport}>Generate Report</button>
 </div>
 {((searchResults.length === 0 && name !== '' && stream !== '' && year !== '') || faults.length === 0) && (
   <p className="text-center text-xl mt-4">

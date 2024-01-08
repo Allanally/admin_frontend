@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import { readXLSXFile } from './FileReader'; // Import the XLSX file reading function
+import { readXLSXFile } from './FileReader'; 
 
 const NewOrder = () => {
   const [classData, setClassData] = useState({
@@ -15,25 +15,19 @@ const NewOrder = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setUploadedFile(file); // Store the uploaded file in state
+      setUploadedFile(file);
       readXLSXFile(file, (data) => {
-        // Handle the data as needed
         console.log('XLSX Data:', data);
-
-        // Assuming each row in data is an array of values [name, rollNumber, ...]
         const studentsData = data.map((row) => {
           return {
-            name: row[0], // Assuming the first column is the name
+            name: row[0], 
             secondName: row[1], 
-            gender: row[2]// Assuming the second column is the rollNumber
-            // Add more properties based on your data structure
+            gender: row[2]
           };
         });
-
-        // Update classData state with the received students data
         setClassData({
-          className: '', // Assuming class name and year are not available from the file
-          classYear: '', // You may adjust this based on your actual data structure
+          className: '', 
+          classYear: '', 
           students: studentsData,
         });
       });

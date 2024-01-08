@@ -31,7 +31,7 @@ const Students = () => {
         <Header category="Your Current" title="Classes" />
         <div className="grid grid-cols-4 ml-6 text-xl gap-4">
           {classNames.map((className, index) => (
-            <Link key={index} to={`/class/${className}`} className="border p-[20px] w-[300px] hover:bg-blue-400 hover:text-white cursor-pointer rounded-md">
+            <Link key={index} to={`/class/${className}`} className="border p-[20px] w-48 hover:bg-blue-400 hover:text-white cursor-pointer rounded-md">
               {className}
             </Link>
           ))}

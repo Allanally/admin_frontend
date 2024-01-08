@@ -5,11 +5,11 @@ import { FaSearch } from 'react-icons/fa';
 import { Header, Button, Form } from '../components';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { FaFilePdf } from 'react-icons/fa';
-import { useStateContext } from '../contexts/ContextProvider';
+import jsPDF from 'jspdf';
 
 const Pending = () => {
   const [permissions, setPermissions] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);  // New state for search results
+  const [searchResults, setSearchResults] = useState([]);
   const [name, setName] = useState('');
   const [stream, setStream] = useState('');
   const [year, setYear] = useState('');
@@ -31,6 +31,35 @@ const Pending = () => {
     fetchPermissions();
   }, []);
 
+  
+const generatePDFReport = () => {
+  const doc = new jsPDF();
+  doc.text('Generated Report', 10, 10);
+
+  // Calculate the total number of faults
+  const totalFaults = (searchResults.length > 0 ? searchResults : permissions).length;
+
+  // Initialize an object to store the count for each specific fault
+  const faultCounts = {};
+
+  // Count the occurrences of each specific fault
+  (searchResults.length > 0 ? searchResults : permissions).forEach(info => {
+    faultCounts[info.name] = (faultCounts[info.name] || 0) + 1;
+  });
+
+  // Iterate over the faults and write the data to the PDF
+  let yPos = 20;
+  Object.keys(faultCounts).forEach(faultName => {
+    const count = faultCounts[faultName];
+    const percentage = (count / totalFaults) * 100;
+
+    doc.text(`${faultName}: ${count} occurrences (${percentage.toFixed(2)}%)`, 10, yPos);
+    yPos += 10; // Adjust the Y position based on your needs
+  });
+
+  // Save or display the PDF
+  doc.save('report.pdf');
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -105,7 +134,7 @@ const Pending = () => {
 </Table>
 <div className="flex justify-center p-2 w-4/12 ml-[30%] bg-blue-500 cursor-pointer rounded-md mt-4 mb-4 text-white text-xl  hover:bg-blue-800">
   <FaFilePdf className=" w-12 h-12"/>
-  <button className="">Generate Report</button>
+  <button className="" onClick={generatePDFReport}>Generate Report</button>
 </div>
 
 {((searchResults.length === 0 && name !== '' && stream !== '' && year !== '') || permissions.length === 0) && (
