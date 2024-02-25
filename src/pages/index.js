@@ -7,3 +7,4 @@ export { default as Staff } from './Staff';
 export { default as InventoryDetails } from "./InventoryDetails";
 export { default as NewOrder} from "./NewOrder";
 export { default as  Main} from  "./Main"
+export { default as Home} from "./Home"

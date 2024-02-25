@@ -13,7 +13,7 @@ const Discipline = () => {
 
   const [faults, setFaults] = useState([]);
   const [searchResults, setSearchResults] = useState([]);  // New state for search results
-  const [name, setName] = useState('');
+  const [name, setName] = ubbb b seState('');
   const [stream, setStream] = useState('');
   const [year, setYear] = useState('');
 

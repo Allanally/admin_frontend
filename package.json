@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^4.30.5",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
     "jspdf": "^2.5.1",

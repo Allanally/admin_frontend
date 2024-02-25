@@ -3,10 +3,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 
 import { Navbar, Footer, Class, Sidebar, ThemeSettings } from './components';
-import { Ecommerce, Students, Discipline, Main, Pending, DetailsPage, Staff, InventoryDetails, NewOrder } from './pages';
+import { Ecommerce, Students, Discipline, Home, Main, Pending, DetailsPage, Staff, InventoryDetails, NewOrder } from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
+
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
 
 
 const App = () => {
